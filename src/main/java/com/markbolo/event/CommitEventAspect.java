@@ -1,7 +1,6 @@
 package com.markbolo.event;
 
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -9,16 +8,11 @@ import org.aspectj.lang.annotation.Aspect;
 
 import java.lang.reflect.Method;
 
+/**
+ * spring-boot Loading Time Weaving Aspect
+ */
 @Aspect
-@Slf4j
 public class CommitEventAspect {
-
-    private final EventProducer eventProducer;
-
-    public CommitEventAspect(EventProducer eventProducer) {
-        this.eventProducer = eventProducer;
-    }
-
 
     @AfterReturning("@annotation(com.markbolo.event.CommitEvent)")
     public void commitEvent(JoinPoint joinPoint, Object ret) throws NoSuchMethodException {
@@ -30,16 +24,16 @@ public class CommitEventAspect {
             return;
         }
 
-        CommitEvent commitEvent = method.getAnnotation(CommitEvent.class);
-        String topic = commitEvent.topic();
-        String tag = commitEvent.tag();
-
+        CommitEvent commitTo = method.getAnnotation(CommitEvent.class);
+        String topic = commitTo.topic();
+        String tag = commitTo.tag();
 
         if ((StringUtils.isEmpty(topic)) && !ret.getClass().isAssignableFrom(Event.class)) {
             throw new IllegalArgumentException("required 'topic' must config.");
         }
 
-
+        EventProducer eventProducer = ContextAware.getApplicationContext()
+                .getBean(EventProducer.class);
         if (StringUtils.isNotEmpty(topic)) {
             eventProducer.produce(topic, tag, ret);
         } else {

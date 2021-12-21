@@ -6,7 +6,15 @@ public interface Event {
 
     String tag();
 
+    default long delay(){
+        return 0L;
+    }
+
     default String trackerId(){
         return "";
+    }
+
+    default String eventType(){
+        return this.getClass().getName();
     }
 }

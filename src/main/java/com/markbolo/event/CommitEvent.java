@@ -20,4 +20,10 @@ public @interface CommitEvent {
      * 事件提交tag
      */
     String tag() default "";
+
+    /**
+     * 消息延迟时间
+     */
+    long delay() default 0L;
 }
+

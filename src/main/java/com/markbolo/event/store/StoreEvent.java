@@ -24,6 +24,14 @@ public class StoreEvent {
         }
     }
 
+    public StoreEvent(EventBean eventBean){
+        this.topic = eventBean.getTopic();
+        this.tag = eventBean.getTag();
+        this.message = eventBean.getMessage();
+        this.status = EventStatus.valueOf(eventBean.getStatus());
+        this.trackerId = eventBean.getTrackerId();
+    }
+
 
     public EventBean eventBean() {
         EventBean eventBean = new EventBean();
@@ -38,5 +46,21 @@ public class StoreEvent {
 
     public void completed() {
         this.status = EventStatus.SUCCESS;
+    }
+
+    public void processing(){
+        this.status = EventStatus.PROCESSING;
+    }
+
+    public String topic(){
+        return topic;
+    }
+
+    public String tag(){
+        return tag;
+    }
+
+    public Object message(){
+        return message;
     }
 }

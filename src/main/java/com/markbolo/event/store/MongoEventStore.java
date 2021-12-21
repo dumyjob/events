@@ -2,7 +2,7 @@ package com.markbolo.event.store;
 
 import java.util.List;
 
-public class MongoEventStore implements EventStore{
+public class MongoEventStore implements EventStore {
 
     @Override
     public void store(StoreEvent event) {
@@ -10,7 +10,17 @@ public class MongoEventStore implements EventStore{
     }
 
     @Override
-    public List<StoreEvent> waiting() {
+    public void updated(StoreEvent event) {
+
+    }
+
+    @Override
+    public void release() {
+
+    }
+
+    @Override
+    public List<StoreEvent> getWaiting() {
         return null;
     }
 }

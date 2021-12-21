@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.markbolo.event.store.EventRepository">
+    <sql id="columns">
+        `id`
+        ,`tracker_id` as trackerId
+        ,`topic` as topic
+        ,`tag` as tag
+        ,`message` as message
+        ,`status` as status
+    </sql>
+    <update id="release">
+        update t_event
+        set status = #{newStatus}
+        where status = #{oldStatus}
+        and locked_time =
+    </update>
+    <select id="selectWaiting" resultType="com.markbolo.event.store.EventBean">
+        select
+        <include refid="columns"/>
+        from t_event
+        where status = #{status}
+        and created_time &lt;= #{time}
+    </select>
+</mapper>

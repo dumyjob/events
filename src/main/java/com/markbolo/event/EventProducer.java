@@ -24,10 +24,11 @@ public class EventProducer {
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
             public void afterCommit() {
-                eventPublisher.publish(topic, tag, message);
-
+                // 缺少EventId去更新
                 storeEvent.completed();
-                // 状态更新和eventStore??
+                eventStore.updated(storeEvent);
+
+                eventPublisher.publish(topic, tag, message);
             }
         });
     }
@@ -40,10 +41,10 @@ public class EventProducer {
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
             public void afterCommit() {
-                eventPublisher.publish(event.topic(), event.tag(), event);
-
                 storeEvent.completed();
-                // 状态更新和eventStore??
+                eventStore.updated(storeEvent);
+
+                eventPublisher.publish(event.topic(), event.tag(), event);
             }
         });
     }

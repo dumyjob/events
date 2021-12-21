@@ -6,5 +6,9 @@ public interface EventStore {
 
     void store(StoreEvent event);
 
-    List<StoreEvent > waiting();
+    void updated(StoreEvent event);
+
+    void release();
+
+    List<StoreEvent> getWaiting();
 }
