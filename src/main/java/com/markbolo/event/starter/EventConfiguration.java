@@ -1,5 +1,6 @@
 package com.markbolo.event.starter;
 
+import com.aliyun.openservices.ons.api.Producer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.markbolo.event.EventProducer;
 import com.markbolo.event.JacksonMessageConverter;
@@ -65,13 +66,14 @@ public class EventConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.ons")
-    public EventPublisher onsEventPublisher() {
-        return new AliOnsEventPublisher();
+    public EventPublisher onsEventPublisher(Producer producer,
+                                            MessageConverter messageConverter) {
+        return new AliOnsEventPublisher(producer, messageConverter);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.kafka")
-    public EventPublisher kafkaEventPublisher(KafkaTemplate<String,String> kafkaTemplate,
+    public EventPublisher kafkaEventPublisher(KafkaTemplate<String, String> kafkaTemplate,
                                               MessageConverter messageConverter) {
         return new KafkaEventPublisher(kafkaTemplate, messageConverter);
     }
