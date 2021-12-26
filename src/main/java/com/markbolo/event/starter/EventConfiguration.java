@@ -1,11 +1,15 @@
 package com.markbolo.event.starter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.markbolo.event.EventProducer;
+import com.markbolo.event.JacksonMessageConverter;
+import com.markbolo.event.MessageConverter;
 import com.markbolo.event.publisher.*;
 import com.markbolo.event.scheduler.EventScheduler;
 import com.markbolo.event.store.EventStore;
-import com.markbolo.event.store.RowsEventStore;
 import de.invesdwin.instrument.DynamicInstrumentationLoader;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,18 +30,25 @@ public class EventConfiguration {
 
     @Bean
     public EventProducer eventProducer(EventStore eventStore,
-                                       EventPublisher eventPublisher){
-       return new EventProducer(eventStore, eventPublisher);
+                                       EventPublisher eventPublisher) {
+        return new EventProducer(eventStore, eventPublisher);
     }
 
     @Bean
-    public EventScheduler  eventScheduler(EventStore eventStore,
-                                          EventPublisher eventPublisher){
+    public EventScheduler eventScheduler(EventStore eventStore,
+                                         EventPublisher eventPublisher) {
         return new EventScheduler(eventPublisher, eventStore);
     }
 
+
     @Bean
-    public EventStore eventStore(TransactionManager transactionManager){
+    @ConditionalOnClass(ObjectMapper.class)
+    public MessageConverter jacksonMessageConverter() {
+        return new JacksonMessageConverter();
+    }
+
+    @Bean
+    public EventStore eventStore(TransactionManager transactionManager) {
 //        return new RowsEventStore();
         // 需要TransactionManager
         return null;
@@ -45,25 +56,26 @@ public class EventConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rabbit")
-    public EventPublisher rabbitEventPublisher(){
+    public EventPublisher rabbitEventPublisher() {
         return new RabbitEventPublisher();
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.ons")
-    public EventPublisher onsEventPublisher(){
+    public EventPublisher onsEventPublisher() {
         return new AliOnsEventPublisher();
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.kafka")
-    public EventPublisher kafkaEventPublisher(){
+    public EventPublisher kafkaEventPublisher() {
         return new KafkaEventPublisher();
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rocket")
-    public EventPublisher rocketEventPublisher(){
-        return new RocketPublisher();
+    public EventPublisher rocketEventPublisher(DefaultMQProducer defaultMQProducer,
+                                               MessageConverter messageConverter) {
+        return new RocketPublisher(defaultMQProducer, messageConverter);
     }
 }
