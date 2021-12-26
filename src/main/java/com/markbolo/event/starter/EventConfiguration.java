@@ -9,6 +9,7 @@ import com.markbolo.event.scheduler.EventScheduler;
 import com.markbolo.event.store.EventStore;
 import de.invesdwin.instrument.DynamicInstrumentationLoader;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -56,8 +57,9 @@ public class EventConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rabbit")
-    public EventPublisher rabbitEventPublisher() {
-        return new RabbitEventPublisher();
+    public EventPublisher rabbitEventPublisher(RabbitTemplate rabbitTemplate,
+                                               MessageConverter messageConverter) {
+        return new RabbitEventPublisher(rabbitTemplate, messageConverter);
     }
 
     @Bean
