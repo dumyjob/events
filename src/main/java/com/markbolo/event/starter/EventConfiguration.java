@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.transaction.TransactionManager;
 
 @Configuration
@@ -70,8 +71,9 @@ public class EventConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.kafka")
-    public EventPublisher kafkaEventPublisher() {
-        return new KafkaEventPublisher();
+    public EventPublisher kafkaEventPublisher(KafkaTemplate<String,String> kafkaTemplate,
+                                              MessageConverter messageConverter) {
+        return new KafkaEventPublisher(kafkaTemplate, messageConverter);
     }
 
     @Bean
