@@ -1,8 +1,13 @@
 package com.markbolo.event;
 
+import java.lang.annotation.*;
+
 /**
  * 如何注册不同client的Consumer??
  */
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface StreamListener {
 
     String name();
