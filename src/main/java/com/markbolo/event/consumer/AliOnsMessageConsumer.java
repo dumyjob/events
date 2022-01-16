@@ -18,9 +18,34 @@ public class AliOnsMessageConsumer extends AbstractMessageConsumer {
         super(configuration, messageConverter);
     }
 
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void close() {
+
+    }
+
+    @Override
+    public boolean started() {
+        return false;
+    }
+
+    @Override
+    public boolean closed() {
+        return false;
+    }
+
+    @Override
+    public String consumerId() {
+        return configuration.getConsumerGroup();
+    }
 
     @Override
     public <T> MessageConsumer subscribe(java.util.function.Consumer<T> handler) {
+        // ali ons connection在哪里处理的??
         String tag = configuration.getTag();
         Integer threadNum = configuration.getThreadNum();
         Properties properties = new Properties();
@@ -46,30 +71,5 @@ public class AliOnsMessageConsumer extends AbstractMessageConsumer {
         });
 
         return this;
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void close() {
-
-    }
-
-    @Override
-    public boolean started() {
-        return false;
-    }
-
-    @Override
-    public boolean closed() {
-        return false;
-    }
-
-    @Override
-    public String consumerId() {
-        return configuration.getConsumerGroup();
     }
 }

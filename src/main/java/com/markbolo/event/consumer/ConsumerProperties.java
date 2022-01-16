@@ -21,8 +21,10 @@ public class ConsumerProperties {
      */
     Map<String, ConsumerConfiguration> consumers = new HashMap<>();
 
+    // TODO 可能需要支持特异化定制配置
     @Data
     public static class ConsumerConfiguration {
+
 
         private String topic;
 
@@ -37,6 +39,10 @@ public class ConsumerProperties {
 
         private Integer triggerNotificationTimes;
 
+        private String exchange;
+
+        private String routingKey;
+
         @Override
         public String toString() {
             return "ConsumerConfiguration{" +
@@ -47,6 +53,8 @@ public class ConsumerProperties {
                     ", triggerNotificationTimes=" + triggerNotificationTimes +
                     '}';
         }
+
+
     }
 
     public Map<String, ConsumerConfiguration> getConsumers() {
