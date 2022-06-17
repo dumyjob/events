@@ -5,12 +5,12 @@ import java.util.List;
 public class MongoEventStore implements EventStore {
 
     @Override
-    public void store(StoreEvent event) {
+    public void store(StoredEvent event) {
 
     }
 
     @Override
-    public void updated(StoreEvent event) {
+    public void updated(StoredEvent event) {
 
     }
 
@@ -20,7 +20,7 @@ public class MongoEventStore implements EventStore {
     }
 
     @Override
-    public List<StoreEvent> getWaiting() {
+    public List<StoredEvent> getWaiting() {
         return null;
     }
 }

@@ -1,13 +1,9 @@
 package com.markbolo.event.publisher;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.markbolo.event.MessageConverter;
 import com.markbolo.event.MqProduceException;
-import org.apache.rocketmq.client.exception.MQBrokerException;
-import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.remoting.exception.RemotingException;
 
 import java.nio.charset.StandardCharsets;
 

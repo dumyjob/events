@@ -2,7 +2,10 @@ package com.markbolo.event.store;
 
 import com.markbolo.event.Event;
 
-public class StoreEvent {
+/**
+ * 存储事件
+ */
+public class StoredEvent {
 
     private final String topic;
 
@@ -14,7 +17,7 @@ public class StoreEvent {
 
     private String trackerId;
 
-    public StoreEvent(String topic, String tag, Object message) {
+    public StoredEvent(String topic, String tag, Object message) {
         this.topic = topic;
         this.tag = tag;
         this.message = message;
@@ -24,7 +27,7 @@ public class StoreEvent {
         }
     }
 
-    public StoreEvent(EventBean eventBean){
+    public StoredEvent(EventBean eventBean){
         this.topic = eventBean.getTopic();
         this.tag = eventBean.getTag();
         this.message = eventBean.getMessage();

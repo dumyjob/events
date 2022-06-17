@@ -2,7 +2,7 @@ package com.markbolo.event.scheduler;
 
 import com.markbolo.event.publisher.EventPublisher;
 import com.markbolo.event.store.EventStore;
-import com.markbolo.event.store.StoreEvent;
+import com.markbolo.event.store.StoredEvent;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class EventScheduler {
     public void schedule() {
         try {
             // 分布式问题处理
-            List<StoreEvent> events = eventStore.getWaiting();
-            for (StoreEvent event : events) {
+            List<StoredEvent> events = eventStore.getWaiting();
+            for (StoredEvent event : events) {
                 event.processing();
                 eventStore.updated(event);
 

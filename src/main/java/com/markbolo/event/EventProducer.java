@@ -2,10 +2,19 @@ package com.markbolo.event;
 
 import com.markbolo.event.publisher.EventPublisher;
 import com.markbolo.event.store.EventStore;
-import com.markbolo.event.store.StoreEvent;
+import com.markbolo.event.store.StoredEvent;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+
+/**
+ * USAGE:
+ *
+ * EventProducer.createInstance()
+ *
+ * EventProducer.instance()
+ *              .publish(final T domainEvent);
+ */
 public class EventProducer {
 
     private final EventStore eventStore;
@@ -19,30 +28,20 @@ public class EventProducer {
     }
 
     public void produce(final String topic, final String tag, final Object message) {
-        StoreEvent storeEvent = new StoreEvent(topic, tag, message);
-        eventStore.store(storeEvent);
-        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override
-            public void afterCommit() {
-                // 缺少EventId去更新
-                storeEvent.completed();
-                eventStore.updated(storeEvent);
-
-                eventPublisher.publish(topic, tag, message);
-            }
-        });
+        StoredEvent storedEvent = new StoredEvent(topic, tag, message);
+        eventStore.store(storedEvent);
     }
 
 
     public void produce(final Event event) {
-        StoreEvent storeEvent = new StoreEvent(event.topic(), event.tag(), event);
-        eventStore.store(storeEvent);
+        StoredEvent storedEvent = new StoredEvent(event.topic(), event.tag(), event);
+        eventStore.store(storedEvent);
 
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
             public void afterCommit() {
-                storeEvent.completed();
-                eventStore.updated(storeEvent);
+                storedEvent.completed();
+                eventStore.updated(storedEvent);
 
                 eventPublisher.publish(event.topic(), event.tag(), event);
             }

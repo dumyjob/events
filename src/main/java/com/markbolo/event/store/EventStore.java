@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface EventStore {
 
-    void store(StoreEvent event);
+    void store(StoredEvent event);
 
-    void updated(StoreEvent event);
+    void updated(StoredEvent event);
 
     void release();
 
-    List<StoreEvent> getWaiting();
+    List<StoredEvent> getWaiting();
 }
