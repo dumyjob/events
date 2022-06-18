@@ -1,7 +1,6 @@
 package com.markbolo.event.producer;
 
 import com.markbolo.event.MessageConverter;
-import com.markbolo.event.MqProduceException;
 import org.springframework.kafka.core.KafkaTemplate;
 
 public class KafkaEventProducer implements EventProducer {

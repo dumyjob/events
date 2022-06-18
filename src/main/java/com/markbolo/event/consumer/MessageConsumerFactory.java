@@ -1,10 +1,9 @@
 package com.markbolo.event.consumer;
 
-import com.markbolo.event.MessageConsumer;
-
-import java.util.function.Consumer;
+import com.markbolo.event.consumer.adpater.ConsumerHandler;
+import com.markbolo.event.consumer.adpater.MessageConsumer;
 
 public interface MessageConsumerFactory {
 
-    <T> MessageConsumer createConsumer(ConsumerProperties.ConsumerConfiguration configuration, Consumer<T> consumer);
+    <T> MessageConsumer createConsumer(ConsumerProperty consumerProperty, ConsumerHandler<T> consumer);
 }

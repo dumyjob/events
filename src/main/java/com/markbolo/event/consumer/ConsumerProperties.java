@@ -1,7 +1,6 @@
 package com.markbolo.event.consumer;
 
 
-import com.markbolo.event.StreamListener;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -9,7 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author jiashuai.xie
+ * 对@StreamListener注解的Consumer进行支持
+ * 通过streamListener.name获取配置中对应的topic/tag等相关消费配置
  */
 @ConfigurationProperties(prefix = ConsumerProperties.PREFIX)
 public class ConsumerProperties {
@@ -21,10 +21,8 @@ public class ConsumerProperties {
      */
     Map<String, ConsumerConfiguration> consumers = new HashMap<>();
 
-    // TODO 可能需要支持特异化定制配置
     @Data
     public static class ConsumerConfiguration {
-
 
         private String topic;
 
@@ -39,6 +37,7 @@ public class ConsumerProperties {
 
         private Integer triggerNotificationTimes;
 
+        // rabbitMq特异化配置
         private String exchange;
 
         private String routingKey;

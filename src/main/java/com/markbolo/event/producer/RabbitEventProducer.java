@@ -1,7 +1,6 @@
 package com.markbolo.event.producer;
 
 import com.markbolo.event.MessageConverter;
-import com.markbolo.event.MqProduceException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public class RabbitEventProducer implements EventProducer {

@@ -1,4 +1,4 @@
-package com.markbolo.event;
+package com.markbolo.event.producer;
 
 public class MqProduceException  extends RuntimeException {
 

@@ -3,7 +3,6 @@ package com.markbolo.event.producer;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.Producer;
 import com.markbolo.event.MessageConverter;
-import com.markbolo.event.MqProduceException;
 
 import java.nio.charset.StandardCharsets;
 

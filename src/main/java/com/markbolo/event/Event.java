@@ -19,4 +19,5 @@ public interface Event {
     default String eventType(){
         return this.getClass().getName();
     }
+
 }

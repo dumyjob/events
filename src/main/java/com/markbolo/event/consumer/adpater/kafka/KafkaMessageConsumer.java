@@ -1,25 +1,27 @@
-package com.markbolo.event.consumer;
+package com.markbolo.event.consumer.adpater.kafka;
 
-import com.markbolo.event.MessageConsumer;
 import com.markbolo.event.MessageConverter;
+import com.markbolo.event.consumer.ConsumerProperty;
+import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
+import com.markbolo.event.consumer.adpater.ConsumerHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Properties;
-import java.util.function.Consumer;
 
 @Slf4j
-public class KafkaMessageConsumer extends AbstractMessageConsumer{
+public class KafkaMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
-    protected KafkaMessageConsumer(ConsumerProperties.ConsumerConfiguration configuration,
-                                   MessageConverter messageConverter) {
-        super(configuration, messageConverter);
+    public KafkaMessageConsumer(ConsumerProperty consumerProperty,
+                                MessageConverter messageConverter,
+                                ConsumerHandler<T> handler) {
+        super(consumerProperty, messageConverter, handler);
     }
+
 
     @Override
     public void start() {
@@ -42,12 +44,7 @@ public class KafkaMessageConsumer extends AbstractMessageConsumer{
     }
 
     @Override
-    public String consumerId() {
-        return null;
-    }
-
-    @Override
-    public <T> MessageConsumer subscribe(Consumer<T> handler) {
+    public void subscribe() {
         Properties props = new Properties();
 
         // 必须设置的属性
@@ -60,13 +57,14 @@ public class KafkaMessageConsumer extends AbstractMessageConsumer{
         props.put("enable.auto.commit", "true");
         // 自动提交offset,每1s提交一次
         props.put("auto.commit.interval.ms", "1000");
-        props.put("auto.offset.reset","earliest ");
+        props.put("auto.offset.reset", "earliest ");
         props.put("client.id", "zy_client_id");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         // 订阅 topic
-        consumer.subscribe(Collections.singletonList(configuration.getTopic()));
+        consumer.subscribe(Collections.singletonList(consumerProperty.getConfiguration().getTopic()));
 
-        while(true) {
+
+        while (true) {
             //  从服务器开始拉取数据
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
             records.forEach(record -> {
@@ -74,16 +72,16 @@ public class KafkaMessageConsumer extends AbstractMessageConsumer{
                         record.offset(), record.key(), record.value());
 
                 // 如果不是需要的tag如何处理??
-                Type type = handler.getClass().getGenericSuperclass();
-                Type messageType = ((ParameterizedType) type).getActualTypeArguments()[0];
-                Class<T> clazz = (Class<T>) messageType;
-
-                T message = messageConverter.from(record.value(), clazz);
-                handler.accept(message);
+                T message = null;
+                try {
+                    message = messageConverter.from(record.value(), handler.getGenericType());
+                } catch (IOException e) {
+                    // TODO 异常处理
+                    e.printStackTrace();
+                }
+                handler.handle(message);
             });
-        }
 
-        // TODO while(true)如何处理??
-        return this;
+        }
     }
 }

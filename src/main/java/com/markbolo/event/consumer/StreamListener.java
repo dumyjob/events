@@ -1,9 +1,17 @@
-package com.markbolo.event;
+package com.markbolo.event.consumer;
 
 import java.lang.annotation.*;
 
 /**
- * 如何注册不同client的Consumer??
+ * <p> 提供注解方式消费消息
+ * <pre>{@code
+ * @StreamListener
+ * public void consumer(X message){
+ *     // 消息消费逻辑,如果没有抛出异常,ACK; 否则NO_ACK
+ * }
+ * }</pre>
+ *
+ * 需要配合{@link ConsumerProperties}配置使用
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

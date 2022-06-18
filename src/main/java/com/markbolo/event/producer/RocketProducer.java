@@ -2,7 +2,6 @@ package com.markbolo.event.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.markbolo.event.MessageConverter;
-import com.markbolo.event.MqProduceException;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;

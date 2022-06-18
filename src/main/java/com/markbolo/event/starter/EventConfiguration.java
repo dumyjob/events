@@ -2,6 +2,7 @@ package com.markbolo.event.starter;
 
 import com.aliyun.openservices.ons.api.Producer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.markbolo.event.EventPublisher;
 import com.markbolo.event.JacksonMessageConverter;
 import com.markbolo.event.MessageConverter;
 import com.markbolo.event.producer.*;
@@ -22,8 +23,8 @@ import org.springframework.transaction.TransactionManager;
 public class EventConfiguration {
 
     @Bean
-    public com.markbolo.event.EventProducer eventProducer(EventStore eventStore) {
-        return new com.markbolo.event.EventProducer(eventStore);
+    public EventPublisher eventProducer(EventStore eventStore) {
+        return new EventPublisher(eventStore);
     }
 
     @Bean

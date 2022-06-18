@@ -1,4 +1,4 @@
-package com.markbolo.event;
+package com.markbolo.event.consumer;
 
 public class MqConsumeException extends RuntimeException {
 

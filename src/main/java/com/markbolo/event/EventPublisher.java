@@ -3,7 +3,6 @@ package com.markbolo.event;
 import com.markbolo.event.store.EventStore;
 import com.markbolo.event.store.StoredEvent;
 
-
 /**
  * USAGE:
  * <p>
@@ -12,11 +11,11 @@ import com.markbolo.event.store.StoredEvent;
  * EventProducer.instance()
  * .publish(final T domainEvent);
  */
-public class EventProducer {
+public class EventPublisher {
 
     private final EventStore eventStore;
 
-    public EventProducer(EventStore eventStore) {
+    public EventPublisher(EventStore eventStore) {
         this.eventStore = eventStore;
     }
 
