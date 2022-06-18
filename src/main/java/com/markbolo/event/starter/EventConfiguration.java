@@ -2,13 +2,11 @@ package com.markbolo.event.starter;
 
 import com.aliyun.openservices.ons.api.Producer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.markbolo.event.EventProducer;
 import com.markbolo.event.JacksonMessageConverter;
 import com.markbolo.event.MessageConverter;
-import com.markbolo.event.publisher.*;
+import com.markbolo.event.producer.*;
 import com.markbolo.event.scheduler.EventScheduler;
 import com.markbolo.event.store.EventStore;
-import de.invesdwin.instrument.DynamicInstrumentationLoader;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -23,24 +21,15 @@ import org.springframework.transaction.TransactionManager;
 @EnableLoadTimeWeaving
 public class EventConfiguration {
 
-    // 如何在应用启动的时候加载这个静态块
-    static {
-        //dynamically attach java agent to jvm if not already present
-        DynamicInstrumentationLoader.waitForInitialized();
-        //weave all classes before they are loaded as beans
-        DynamicInstrumentationLoader.initLoadTimeWeavingContext();
-    }
-
     @Bean
-    public EventProducer eventProducer(EventStore eventStore,
-                                       EventPublisher eventPublisher) {
-        return new EventProducer(eventStore, eventPublisher);
+    public com.markbolo.event.EventProducer eventProducer(EventStore eventStore) {
+        return new com.markbolo.event.EventProducer(eventStore);
     }
 
     @Bean
     public EventScheduler eventScheduler(EventStore eventStore,
-                                         EventPublisher eventPublisher) {
-        return new EventScheduler(eventPublisher, eventStore);
+                                         EventProducer eventProducer) {
+        return new EventScheduler(eventProducer, eventStore);
     }
 
 
@@ -59,29 +48,29 @@ public class EventConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rabbit")
-    public EventPublisher rabbitEventPublisher(RabbitTemplate rabbitTemplate,
-                                               MessageConverter messageConverter) {
-        return new RabbitEventPublisher(rabbitTemplate, messageConverter);
+    public EventProducer rabbitEventPublisher(RabbitTemplate rabbitTemplate,
+                                              MessageConverter messageConverter) {
+        return new RabbitEventProducer(rabbitTemplate, messageConverter);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.ons")
-    public EventPublisher onsEventPublisher(Producer producer,
-                                            MessageConverter messageConverter) {
-        return new AliOnsEventPublisher(producer, messageConverter);
+    public EventProducer onsEventPublisher(Producer producer,
+                                           MessageConverter messageConverter) {
+        return new AliOnsEventProducer(producer, messageConverter);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.kafka")
-    public EventPublisher kafkaEventPublisher(KafkaTemplate<String, String> kafkaTemplate,
-                                              MessageConverter messageConverter) {
-        return new KafkaEventPublisher(kafkaTemplate, messageConverter);
+    public EventProducer kafkaEventPublisher(KafkaTemplate<String, String> kafkaTemplate,
+                                             MessageConverter messageConverter) {
+        return new KafkaEventProducer(kafkaTemplate, messageConverter);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rocket")
-    public EventPublisher rocketEventPublisher(DefaultMQProducer defaultMQProducer,
-                                               MessageConverter messageConverter) {
-        return new RocketPublisher(defaultMQProducer, messageConverter);
+    public EventProducer rocketEventPublisher(DefaultMQProducer defaultMQProducer,
+                                              MessageConverter messageConverter) {
+        return new RocketProducer(defaultMQProducer, messageConverter);
     }
 }

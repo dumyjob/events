@@ -1,18 +1,17 @@
-package com.markbolo.event.publisher;
+package com.markbolo.event.producer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.markbolo.event.MessageConverter;
 import com.markbolo.event.MqProduceException;
 import org.springframework.kafka.core.KafkaTemplate;
 
-public class KafkaEventPublisher implements EventPublisher {
+public class KafkaEventProducer implements EventProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     private final MessageConverter messageConverter;
 
-    public KafkaEventPublisher(KafkaTemplate<String, String> kafkaTemplate,
-                               MessageConverter messageConverter) {
+    public KafkaEventProducer(KafkaTemplate<String, String> kafkaTemplate,
+                              MessageConverter messageConverter) {
         this.kafkaTemplate = kafkaTemplate;
         this.messageConverter = messageConverter;
     }

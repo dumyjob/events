@@ -1,6 +1,6 @@
 package com.markbolo.event.store;
 
-import com.markbolo.event.publisher.EventPublisher;
+import com.markbolo.event.producer.EventProducer;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -13,11 +13,11 @@ public class DataBaseEventStore implements EventStore {
 
     // 需要屏蔽mybatis/hibernate/jpa/jdbc...等的差异
     private final EventRepository eventRepository;
-    private final EventPublisher eventPublisher;
+    private final EventProducer eventProducer;
 
     public DataBaseEventStore(EventRepository eventRepository,
-                              EventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
+                              EventProducer eventProducer) {
+        this.eventProducer = eventProducer;
         this.eventRepository = eventRepository;
     }
 
@@ -38,7 +38,7 @@ public class DataBaseEventStore implements EventStore {
                 event.completed();
                 updated(event);
 
-                eventPublisher.publish(event.topic(), event.tag(), event.message());
+                eventProducer.publish(event.topic(), event.tag(), event.message());
             }
         });
     }

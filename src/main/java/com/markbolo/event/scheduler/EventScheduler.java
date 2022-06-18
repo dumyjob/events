@@ -1,6 +1,6 @@
 package com.markbolo.event.scheduler;
 
-import com.markbolo.event.publisher.EventPublisher;
+import com.markbolo.event.producer.EventProducer;
 import com.markbolo.event.store.EventStore;
 import com.markbolo.event.store.StoredEvent;
 
@@ -9,12 +9,12 @@ import java.util.List;
 
 public class EventScheduler {
 
-    private final EventPublisher eventPublisher;
+    private final EventProducer eventProducer;
 
     private final EventStore eventStore;
 
-    public EventScheduler(EventPublisher eventPublisher, EventStore eventStore) {
-        this.eventPublisher = eventPublisher;
+    public EventScheduler(EventProducer eventProducer, EventStore eventStore) {
+        this.eventProducer = eventProducer;
         this.eventStore = eventStore;
     }
 
@@ -29,7 +29,7 @@ public class EventScheduler {
                 event.completed();
                 eventStore.updated(event);
 
-                eventPublisher.publish(event.topic(), event.tag(), event.message());
+                eventProducer.publish(event.topic(), event.tag(), event.message());
             }
         } finally {
             eventStore.release();
