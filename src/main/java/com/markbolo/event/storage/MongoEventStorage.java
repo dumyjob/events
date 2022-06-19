@@ -1,8 +1,8 @@
-package com.markbolo.event.store;
+package com.markbolo.event.storage;
 
 import java.util.List;
 
-public class MongoEventStore implements EventStore {
+public class MongoEventStorage implements EventStorage {
 
     @Override
     public void store(StoredEvent event) {
@@ -20,7 +20,7 @@ public class MongoEventStore implements EventStore {
     }
 
     @Override
-    public List<StoredEvent> getWaiting() {
+    public List<StoredEvent> unpublishedEvents() {
         return null;
     }
 }

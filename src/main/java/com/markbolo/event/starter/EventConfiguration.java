@@ -7,7 +7,7 @@ import com.markbolo.event.JacksonMessageConverter;
 import com.markbolo.event.MessageConverter;
 import com.markbolo.event.producer.*;
 import com.markbolo.event.scheduler.EventScheduler;
-import com.markbolo.event.store.EventStore;
+import com.markbolo.event.storage.EventStorage;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -23,14 +23,14 @@ import org.springframework.transaction.TransactionManager;
 public class EventConfiguration {
 
     @Bean
-    public EventPublisher eventProducer(EventStore eventStore) {
-        return new EventPublisher(eventStore);
+    public EventPublisher eventProducer(EventStorage eventStorage) {
+        return new EventPublisher(eventStorage);
     }
 
     @Bean
-    public EventScheduler eventScheduler(EventStore eventStore,
+    public EventScheduler eventScheduler(EventStorage eventStorage,
                                          EventProducer eventProducer) {
-        return new EventScheduler(eventProducer, eventStore);
+        return new EventScheduler(eventProducer, eventStorage);
     }
 
 
@@ -41,7 +41,7 @@ public class EventConfiguration {
     }
 
     @Bean
-    public EventStore eventStore(TransactionManager transactionManager) {
+    public EventStorage eventStore(TransactionManager transactionManager) {
 //        return new RowsEventStore();
         // 需要TransactionManager
         return null;

@@ -1,7 +1,7 @@
 package com.markbolo.event;
 
-import com.markbolo.event.store.EventStore;
-import com.markbolo.event.store.StoredEvent;
+import com.markbolo.event.storage.Event;
+import com.markbolo.event.storage.EventStorage;
 
 /**
  * USAGE:
@@ -14,14 +14,14 @@ import com.markbolo.event.store.StoredEvent;
 public class EventPublisher {
 
     private static EventPublisher instance;
-    private final EventStore eventStore;
+    private final EventStorage eventStorage;
 
-    public EventPublisher(EventStore eventStore) {
-        this.eventStore = eventStore;
+    public EventPublisher(EventStorage eventStorage) {
+        this.eventStorage = eventStorage;
     }
 
-    public static void createInstance(EventStore eventStore) {
-        instance = new EventPublisher(eventStore);
+    public static void createInstance(EventStorage eventStorage) {
+        instance = new EventPublisher(eventStorage);
     }
 
     public static EventPublisher instance() {
@@ -29,12 +29,12 @@ public class EventPublisher {
     }
 
     public void produce(final String topic, final String tag, final Object message) {
-        StoredEvent storedEvent = new StoredEvent(topic, tag, message);
-        eventStore.store(storedEvent);
+        Event event = new Event(topic, tag, message);
+        eventStorage.store(event);
     }
 
-    public void produce(final Event event) {
-        StoredEvent storedEvent = new StoredEvent(event.topic(), event.tag(), event);
-        eventStore.store(storedEvent);
+    public void produce(final com.markbolo.event.Event event) {
+        com.markbolo.event.storage.Event domainEvent = new Event(event.topic(), event.tag(), event);
+        eventStorage.store(domainEvent);
     }
 }

@@ -15,3 +15,13 @@ create table t_event(
       INDEX `idx_update_date`(`updated_date`) USING BTREE COMMENT '更新时间索引',
       INDEX `idx_tracker_id`(`tracker_id`) USING BTREE COMMENT '跟踪id'
 );
+
+
+create table tbl_stored_event (
+	event_id int(11) not null auto_increment,
+	event_body varchar(65000) not  null,
+	occurred_on datetime not null,
+	type_name varchar(100) not null,
+	primary_key('event_id')
+
+)

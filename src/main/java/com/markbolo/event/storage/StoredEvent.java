@@ -1,69 +1,70 @@
-package com.markbolo.event.store;
+package com.markbolo.event.storage;
 
 import com.markbolo.event.Event;
+import com.markbolo.event.storage.dao.EventBean;
 
 /**
  * 存储事件
+ * 整理Event & StoredEvent & EventBean之间的关系
  */
 public class StoredEvent {
+
+    private final Object body;
 
     private final String topic;
 
     private final String tag;
 
-    private final Object message;
-
+    private Long eventId;
     private EventStatus status;
-
     private String trackerId;
 
     public StoredEvent(String topic, String tag, Object message) {
         this.topic = topic;
         this.tag = tag;
-        this.message = message;
-        this.status = EventStatus.WAIT;
+        this.body = message;
+        this.status = EventStatus.UN_PUBLISHED;
         if (message.getClass().isAssignableFrom(Event.class)) {
             this.trackerId = ((Event) message).trackerId();
         }
     }
 
-    public StoredEvent(EventBean eventBean){
+    public StoredEvent(EventBean eventBean) {
+        this.eventId = eventBean.getId();
         this.topic = eventBean.getTopic();
         this.tag = eventBean.getTag();
-        this.message = eventBean.getMessage();
+        this.body = eventBean.getMessage();
         this.status = EventStatus.valueOf(eventBean.getStatus());
         this.trackerId = eventBean.getTrackerId();
     }
 
-
     public EventBean eventBean() {
         EventBean eventBean = new EventBean();
-        eventBean.setTopic(this.topic);
-        eventBean.setTag(this.tag);
-        eventBean.setStatus(status.toString());
-        // TODO 转换String jackson/ gson / xml?? MessageConverter
-        eventBean.setMessage(this.message.toString());
-        eventBean.setTrackerId(this.trackerId);
+
+        // 仅会更新status
+        eventBean.setId(this.eventId);
+        eventBean.setStatus(this.status.name());
+
         return eventBean;
     }
 
     public void completed() {
-        this.status = EventStatus.SUCCESS;
+        this.status = EventStatus.PUBLISHED;
     }
 
-    public void processing(){
-        this.status = EventStatus.PROCESSING;
+    public void processing() {
+        this.status = EventStatus.PUBLISHING;
     }
 
-    public String topic(){
+    public String topic() {
         return topic;
     }
 
-    public String tag(){
+    public String tag() {
         return tag;
     }
 
-    public Object message(){
-        return message;
+    public Object message() {
+        return body;
     }
 }
