@@ -13,10 +13,19 @@ import com.markbolo.event.store.StoredEvent;
  */
 public class EventPublisher {
 
+    private static EventPublisher instance;
     private final EventStore eventStore;
 
     public EventPublisher(EventStore eventStore) {
         this.eventStore = eventStore;
+    }
+
+    public static void createInstance(EventStore eventStore) {
+        instance = new EventPublisher(eventStore);
+    }
+
+    public static EventPublisher instance() {
+        return instance;
     }
 
     public void produce(final String topic, final String tag, final Object message) {
