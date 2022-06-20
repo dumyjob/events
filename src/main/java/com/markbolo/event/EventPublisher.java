@@ -40,20 +40,29 @@ public class EventPublisher {
 
     public void produce(final String topic, final String tag, final Object message) {
         try {
-            Event event = new Event(topic, tag, messageConverter.format(message));
+            Event event = new Event(topic, tag, messageConverter.format(message), 0L);
             eventStorage.store(event);
         } catch (Exception e) {
-            log.error("publish event error,", e);
             throw new ProducerException(e);
         }
     }
 
-    public void produce(final com.markbolo.event.Event businessEvent) {
+    public void produce(final String topic, final String tag, final Object message, long delay) {
         try {
-            Event event = new Event(businessEvent.topic(), businessEvent.tag(), messageConverter.format(businessEvent));
+            Event event = new Event(topic, tag, messageConverter.format(message), delay);
             eventStorage.store(event);
         } catch (Exception e) {
-            log.error("publish event error,", e);
+            throw new ProducerException(e);
+        }
+    }
+
+    public void produce(final DomainEvent domainEvent) {
+        try {
+            Event event = new Event(domainEvent.topic(), domainEvent.tag(),
+                    messageConverter.format(domainEvent), domainEvent.delay());
+            eventStorage.store(event);
+        } catch (Exception e) {
+            // 异常是否能够用切面处理
             throw new ProducerException(e);
         }
     }

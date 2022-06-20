@@ -5,11 +5,11 @@
 
     <sql id="columns">
         `id`
-        ,`tracker_id` as trackerId
         ,`topic` as topic
         ,`tag` as tag
         ,`message` as message
         ,`status` as status
+        ,`delay` as delay
     </sql>
     <update id="release">
         update t_event

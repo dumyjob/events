@@ -22,4 +22,6 @@ public class EventBean {
     private String status;
 
     private String trackerId;
+
+    private Long delay;
 }
