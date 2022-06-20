@@ -10,6 +10,7 @@ import com.markbolo.event.consumer.adpater.alions.AliyunOnsProperties;
 import com.markbolo.event.consumer.adpater.kafka.KafkaConsumerFactory;
 import com.markbolo.event.consumer.adpater.rabbit.RabbitConsumerFactory;
 import com.markbolo.event.consumer.adpater.rocket.RocketConsumerFactory;
+import com.markbolo.event.consumer.adpater.rocket.RocketProperties;
 import com.markbolo.event.converter.JacksonMessageConverter;
 import com.markbolo.event.converter.MessageConverter;
 import com.markbolo.event.producer.*;
@@ -118,8 +119,9 @@ public class EventConfiguration {
     @Bean
     @ConditionalOnClass(DefaultMQProducer.class)
     @ConditionalOnMissingClass({"com.aliyun.openservices.ons.api.ONSFactory"})
-    public MessageConsumerFactory rocketConsumerFactory(MessageConverter messageConverter) {
-        return new RocketConsumerFactory(messageConverter);
+    public MessageConsumerFactory rocketConsumerFactory(MessageConverter messageConverter,
+                                                        RocketProperties rocketProperties) {
+        return new RocketConsumerFactory(messageConverter, rocketProperties);
     }
 
     @Bean

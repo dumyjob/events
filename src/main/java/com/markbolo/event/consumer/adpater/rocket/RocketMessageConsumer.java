@@ -21,11 +21,14 @@ public class RocketMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
     protected final AtomicBoolean started = new AtomicBoolean(false);
     private DefaultMQPushConsumer consumer;
+    private final RocketProperties rocketProperties;
 
     public RocketMessageConsumer(ConsumerProperty consumerProperty,
                                  MessageConverter messageConverter,
-                                 ConsumerHandler<T> handler) {
+                                 ConsumerHandler<T> handler,
+                                 RocketProperties rocketProperties) {
         super(consumerProperty, messageConverter, handler);
+        this.rocketProperties = rocketProperties;
     }
 
     @Override
@@ -73,14 +76,17 @@ public class RocketMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
     @Override
     public void subscribe() {
-        // rocketmq connection在哪里处理??
         try {
             ConsumerProperties.ConsumerConfiguration configuration = consumerProperty.getConfiguration();
             this.consumer = new DefaultMQPushConsumer(configuration.getConsumerGroup());
+            // nameserver
+            consumer.setNamesrvAddr(rocketProperties.getNameServer());
+            consumer.setInstanceName(rocketProperties.getInstanceName());
+            // consumer配置
             consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+            consumer.setConsumeThreadMin(configuration.getThreadNum());     // 批量并发线程消费
             consumer.subscribe(configuration.getTopic(), configuration.getTag());
             consumer.registerMessageListener((MessageListenerConcurrently) (messages, context) -> {
-                // 批量并发线程消费??
                 try {
                     for (MessageExt message : messages) {
                         T body = messageConverter.from(message.getBody(), handler.getGenericType());
@@ -92,6 +98,7 @@ public class RocketMessageConsumer<T> extends AbstractMessageConsumer<T> {
                     return ConsumeConcurrentlyStatus.RECONSUME_LATER;
                 }
             });
+            consumer.start();
         } catch (MQClientException e) {
             throw new ConsumerException(e);
         }

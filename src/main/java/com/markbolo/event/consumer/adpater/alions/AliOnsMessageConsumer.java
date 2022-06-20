@@ -90,7 +90,6 @@ public class AliOnsMessageConsumer<T> extends AbstractMessageConsumer<T> {
         properties.put(PropertyKeyConst.ConsumeThreadNums, configuration.getThreadNum());
 
         this.consumer = ONSFactory.createConsumer(properties);
-        consumer.start();
         consumer.subscribe(configuration.getTopic(), tag, (message, context) -> {
             try {
                 T body = messageConverter.from(message.getBody(), handler.getGenericType());
@@ -100,5 +99,6 @@ public class AliOnsMessageConsumer<T> extends AbstractMessageConsumer<T> {
                 return Action.ReconsumeLater;
             }
         });
+        consumer.start();
     }
 }
