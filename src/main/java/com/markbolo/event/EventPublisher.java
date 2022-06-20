@@ -1,7 +1,7 @@
 package com.markbolo.event;
 
 import com.markbolo.event.converter.MessageConverter;
-import com.markbolo.event.producer.MqProduceException;
+import com.markbolo.event.producer.ProducerException;
 import com.markbolo.event.storage.Event;
 import com.markbolo.event.storage.EventStorage;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class EventPublisher {
             eventStorage.store(event);
         } catch (Exception e) {
             log.error("publish event error,", e);
-            throw new MqProduceException(e);
+            throw new ProducerException(e);
         }
     }
 
@@ -54,7 +54,7 @@ public class EventPublisher {
             eventStorage.store(event);
         } catch (Exception e) {
             log.error("publish event error,", e);
-            throw new MqProduceException(e);
+            throw new ProducerException(e);
         }
     }
 }

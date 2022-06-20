@@ -23,7 +23,7 @@ public class AliOnsEventProducer implements EventProducer {
             Message msg = new Message(topic, tag, body);
             producer.send(msg);
         } catch (Exception e) {
-            throw new MqProduceException("message produce exception:" + e.getMessage(), e);
+            throw new ProducerException("message produce exception:" + e.getMessage(), e);
         }
     }
 }

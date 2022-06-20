@@ -17,7 +17,7 @@ public class KafkaEventProducer implements EventProducer {
             // kafka的partition如何体现
             kafkaTemplate.send(topic, tag, body);
         } catch (Exception e) {
-            throw new MqProduceException("message produce exception:" + e.getMessage(), e);
+            throw new ProducerException("message produce exception:" + e.getMessage(), e);
         }
 
     }

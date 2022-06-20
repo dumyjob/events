@@ -6,10 +6,8 @@ import com.markbolo.event.consumer.adpater.ConsumerHandler;
 import com.markbolo.event.consumer.adpater.MessageConsumer;
 import com.markbolo.event.converter.MessageConverter;
 import com.rabbitmq.client.ConnectionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class RabbitConsumerFactory implements MessageConsumerFactory {
 
     private final MessageConverter messageConverter;
@@ -17,7 +15,7 @@ public class RabbitConsumerFactory implements MessageConsumerFactory {
     // TODO 需要处理rabbitmq connectionFactory
     private final ConnectionFactory connectionFactory;
 
-    @Autowired
+
     public RabbitConsumerFactory(MessageConverter messageConverter,
                                  ConnectionFactory connectionFactory) {
         this.messageConverter = messageConverter;

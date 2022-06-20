@@ -74,7 +74,7 @@ public class AliOnsMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
     @Override
     public void subscribe() {
-        // ali ons connection在哪里处理的??
+        // TODO ali ons connection在哪里处理的?? NameServer and soon
         ConsumerProperties.ConsumerConfiguration configuration = consumerProperty.getConfiguration();
         String tag = configuration.getTag();
         Integer threadNum = configuration.getThreadNum();

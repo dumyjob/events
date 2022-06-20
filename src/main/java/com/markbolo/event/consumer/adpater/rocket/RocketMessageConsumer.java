@@ -1,9 +1,8 @@
 package com.markbolo.event.consumer.adpater.rocket;
 
-import com.aliyun.openservices.ons.api.exception.ONSClientException;
+import com.markbolo.event.consumer.ConsumerException;
 import com.markbolo.event.consumer.ConsumerProperties;
 import com.markbolo.event.consumer.ConsumerProperty;
-import com.markbolo.event.consumer.MqConsumeException;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
 import com.markbolo.event.converter.MessageConverter;
@@ -32,7 +31,7 @@ public class RocketMessageConsumer<T> extends AbstractMessageConsumer<T> {
     @Override
     public void start() {
         if (null == this.consumerProperty) {
-            throw new ONSClientException("properties not set");
+            throw new ConsumerException("properties not set");
         }
 
         if (this.consumer != null && this.started.get()) {
@@ -89,11 +88,12 @@ public class RocketMessageConsumer<T> extends AbstractMessageConsumer<T> {
                     }
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 } catch (Exception e) {
+                    // 这里消息增强处理,日志监控 & 消息告警等 (能否通过切面等非侵入的方式完成)
                     return ConsumeConcurrentlyStatus.RECONSUME_LATER;
                 }
             });
         } catch (MQClientException e) {
-            throw new MqConsumeException(e);
+            throw new ConsumerException(e);
         }
     }
 }

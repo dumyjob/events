@@ -1,9 +1,9 @@
 package com.markbolo.event.consumer.adpater.rabbit;
 
 import com.aliyun.openservices.ons.api.exception.ONSClientException;
+import com.markbolo.event.consumer.ConsumerException;
 import com.markbolo.event.consumer.ConsumerProperties;
 import com.markbolo.event.consumer.ConsumerProperty;
-import com.markbolo.event.consumer.MqConsumeException;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
 import com.markbolo.event.converter.MessageConverter;
@@ -63,7 +63,8 @@ public class RabbitMessageConsumer<T> extends AbstractMessageConsumer<T> {
             try {
                 this.channel.close();
             } catch (Exception e) {
-                //TODO e.printStackTrace();
+                throw new ConsumerException(String.format("consumer close fail, %s:%s ",
+                        this.getClass(), this.consumerProperty.getName()), e);
             }
         }
     }
@@ -101,17 +102,18 @@ public class RabbitMessageConsumer<T> extends AbstractMessageConsumer<T> {
                         handler.handle(message);
                         channel.basicAck(envelope.getDeliveryTag(), false);
                     } catch (IOException e) {
-                        // TODO 异常处理
+                        //  是否要做增强处理, 例如对Consumer消费的监控
                         try {
                             channel.basicNack(envelope.getDeliveryTag(), false, true);
                         } catch (IOException ex) {
-                            ex.printStackTrace();
+                            log.error("consumer n_ack fail, {}:{}", this.getClass(), consumerProperty.getName());
                         }
                     }
                 }
             });
         } catch (IOException | TimeoutException e) {
-            throw new MqConsumeException(e);
+            log.error("rabbit broker connection fail,", e);
+            throw new ConsumerException(e);
         }
     }
 }

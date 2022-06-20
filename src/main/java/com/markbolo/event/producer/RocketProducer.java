@@ -26,11 +26,11 @@ public class RocketProducer implements EventProducer {
             Message msg = new Message(topic, tag, body);
             defaultMQProducer.send(msg);
         } catch (MQClientException | RemotingException | MQBrokerException e) {
-            throw new MqProduceException("message produce exception:" + e.getMessage(), e);
+            throw new ProducerException("message produce exception:" + e.getMessage(), e);
         } catch (InterruptedException e) {
             // 使其他线程能够感知此线程已经被中断
             Thread.currentThread().interrupt();
-            throw new MqProduceException(e);
+            throw new ProducerException(e);
         }
     }
 }
