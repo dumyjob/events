@@ -1,5 +1,6 @@
 package com.markbolo.event.consumer.adpater.kafka;
 
+import com.markbolo.event.consumer.ConsumerException;
 import com.markbolo.event.consumer.ConsumerProperty;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
@@ -62,8 +63,6 @@ public class KafkaMessageConsumer<T> extends AbstractMessageConsumer<T> {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         // 订阅 topic
         consumer.subscribe(Collections.singletonList(consumerProperty.getConfiguration().getTopic()));
-
-
         while (true) {
             //  从服务器开始拉取数据
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
@@ -72,12 +71,11 @@ public class KafkaMessageConsumer<T> extends AbstractMessageConsumer<T> {
                         record.offset(), record.key(), record.value());
 
                 // 如果不是需要的tag如何处理??
-                T message = null;
+                T message;
                 try {
                     message = messageConverter.from(record.value(), handler.getGenericType());
                 } catch (IOException e) {
-                    // TODO 异常处理
-                    e.printStackTrace();
+                    throw new ConsumerException(e);
                 }
                 handler.handle(message);
             });
