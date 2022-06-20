@@ -1,27 +1,21 @@
 package com.markbolo.event.producer;
 
-import com.markbolo.event.MessageConverter;
 import org.springframework.kafka.core.KafkaTemplate;
 
 public class KafkaEventProducer implements EventProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    private final MessageConverter messageConverter;
-
-    public KafkaEventProducer(KafkaTemplate<String, String> kafkaTemplate,
-                              MessageConverter messageConverter) {
+    public KafkaEventProducer(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-        this.messageConverter = messageConverter;
     }
 
 
     @Override
-    public void publish(String topic, String tag, Object message) {
+    public void publish(String topic, String tag, String body) {
         try {
             // kafka的partition如何体现
-            String msg = messageConverter.format(message);
-            kafkaTemplate.send(topic, tag, msg);
+            kafkaTemplate.send(topic, tag, body);
         } catch (Exception e) {
             throw new MqProduceException("message produce exception:" + e.getMessage(), e);
         }

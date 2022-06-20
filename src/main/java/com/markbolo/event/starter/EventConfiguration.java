@@ -14,17 +14,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.transaction.TransactionManager;
 
 @Configuration
-@EnableLoadTimeWeaving
 public class EventConfiguration {
 
     @Bean
     public EventPublisher eventProducer(EventStorage eventStorage) {
-        return new EventPublisher(eventStorage);
+        return new EventPublisher(eventStorage, messageConverter);
     }
 
     @Bean
@@ -51,27 +49,27 @@ public class EventConfiguration {
     @ConditionalOnProperty("spring.event.publisher.rabbit")
     public EventProducer rabbitEventPublisher(RabbitTemplate rabbitTemplate,
                                               MessageConverter messageConverter) {
-        return new RabbitEventProducer(rabbitTemplate, messageConverter);
+        return new RabbitEventProducer(rabbitTemplate);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.ons")
     public EventProducer onsEventPublisher(Producer producer,
                                            MessageConverter messageConverter) {
-        return new AliOnsEventProducer(producer, messageConverter);
+        return new AliOnsEventProducer(producer);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.kafka")
     public EventProducer kafkaEventPublisher(KafkaTemplate<String, String> kafkaTemplate,
                                              MessageConverter messageConverter) {
-        return new KafkaEventProducer(kafkaTemplate, messageConverter);
+        return new KafkaEventProducer(kafkaTemplate);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rocket")
     public EventProducer rocketEventPublisher(DefaultMQProducer defaultMQProducer,
                                               MessageConverter messageConverter) {
-        return new RocketProducer(defaultMQProducer, messageConverter);
+        return new RocketProducer(defaultMQProducer);
     }
 }

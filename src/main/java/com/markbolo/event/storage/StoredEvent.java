@@ -1,6 +1,5 @@
 package com.markbolo.event.storage;
 
-import com.markbolo.event.Event;
 import com.markbolo.event.storage.dao.EventBean;
 
 /**
@@ -9,7 +8,7 @@ import com.markbolo.event.storage.dao.EventBean;
  */
 public class StoredEvent {
 
-    private final Object body;
+    private final String body;
 
     private final String topic;
 
@@ -18,16 +17,6 @@ public class StoredEvent {
     private Long eventId;
     private EventStatus status;
     private String trackerId;
-
-    public StoredEvent(String topic, String tag, Object message) {
-        this.topic = topic;
-        this.tag = tag;
-        this.body = message;
-        this.status = EventStatus.UN_PUBLISHED;
-        if (message.getClass().isAssignableFrom(Event.class)) {
-            this.trackerId = ((Event) message).trackerId();
-        }
-    }
 
     public StoredEvent(EventBean eventBean) {
         this.eventId = eventBean.getId();
@@ -64,7 +53,7 @@ public class StoredEvent {
         return tag;
     }
 
-    public Object message() {
+    public String message() {
         return body;
     }
 }

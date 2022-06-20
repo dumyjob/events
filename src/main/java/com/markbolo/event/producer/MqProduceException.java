@@ -6,7 +6,7 @@ public class MqProduceException  extends RuntimeException {
         super(message, cause);
     }
 
-    public MqProduceException(InterruptedException e) {
+    public MqProduceException(Throwable e) {
         super(e);
     }
 }
