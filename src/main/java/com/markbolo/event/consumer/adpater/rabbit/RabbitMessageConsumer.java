@@ -79,25 +79,17 @@ public class RabbitMessageConsumer<T> extends AbstractMessageConsumer<T> {
         return !this.started.get();
     }
 
-
     @Override
     public void subscribe() {
         // 需要处理rabbitmq connection
         try (Connection connection = connectionFactory.newConnection()) {
             this.channel = connection.createChannel();
-            // TODO 理解一下rabbitmq exchange routingKey 看是否必须
             ConsumerProperties.ConsumerConfiguration configuration = consumerProperty.getConfiguration();
-            String patternTopic = "topic";
-            channel.exchangeDeclare(configuration.getExchange(), patternTopic);
-            channel.queueDeclare(configuration.getTopic(), true, false, false, null);
-            channel.queueBind(configuration.getTopic(), configuration.getExchange(), configuration.getRoutingKey());
-
             boolean autoAck = false;
-            channel.basicConsume(configuration.getTopic(), autoAck, new DefaultConsumer(channel) {
+            channel.basicConsume(configuration.getTopic(), autoAck, configuration.getTag(), new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
                     try {
-                        // 如果不是需要的tag如何处理??
                         T message = messageConverter.from(body, handler.getGenericType());
                         handler.handle(message);
                         channel.basicAck(envelope.getDeliveryTag(), false);

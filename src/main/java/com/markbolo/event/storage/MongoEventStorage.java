@@ -5,7 +5,7 @@ import java.util.List;
 public class MongoEventStorage implements EventStorage {
 
     @Override
-    public void store(StoredEvent event) {
+    public void store(Event event) {
 
     }
 
