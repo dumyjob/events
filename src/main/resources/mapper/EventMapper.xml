@@ -15,7 +15,6 @@
         update t_event
         set status = #{newStatus}
         where status = #{oldStatus}
-        and locked_time =
     </update>
     <select id="getUnPublishEvents" resultType="com.markbolo.event.storage.dao.EventBean">
         select
