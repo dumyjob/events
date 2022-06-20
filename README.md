@@ -18,3 +18,7 @@
    2. Rabbitmq不支持延时消息队列,只能通过队列ttl+死信队列实现固定延时
    3. Kafka无延时队列,虽然Kafka内部有时间轮，支持延时操作，例如：延迟生产、延迟拉取以及延迟删除，但这是Kafka自己内部使用的，用户无法将其作为延迟队列来使用
 2. 消息发送异常补偿的时候,处理分布式并发问题
+3. 调研ali-ons/rocketMq和RabbitMq以及Kafka对发送多tag消息的支持
+   1. ali-ons/rocketMq是支持多tag消费发送的
+   2. rabbitMq通过topic方式应该能够实现,需要研究一下rabbitmq源码,看看topic模式是怎么分发到consumer Queue上的
+   3. kafka不是很了解,也需要调研一下
