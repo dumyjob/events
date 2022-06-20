@@ -5,11 +5,11 @@ import com.aliyun.openservices.ons.api.Consumer;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.aliyun.openservices.ons.api.exception.ONSClientException;
-import com.markbolo.event.MessageConverter;
 import com.markbolo.event.consumer.ConsumerProperties;
 import com.markbolo.event.consumer.ConsumerProperty;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
+import com.markbolo.event.converter.MessageConverter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Properties;

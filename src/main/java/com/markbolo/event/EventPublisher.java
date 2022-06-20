@@ -1,9 +1,11 @@
 package com.markbolo.event;
 
+import com.markbolo.event.converter.MessageConverter;
 import com.markbolo.event.producer.MqProduceException;
 import com.markbolo.event.storage.Event;
 import com.markbolo.event.storage.EventStorage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
 
 /**
  * USAGE:
@@ -32,6 +34,7 @@ public class EventPublisher {
     }
 
     public static EventPublisher instance() {
+        Assert.notNull(instance, "event publisher not configured!!!");
         return instance;
     }
 

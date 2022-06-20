@@ -13,7 +13,8 @@ public class EventScheduler {
 
     private final EventStorage eventStorage;
 
-    public EventScheduler(EventProducer eventProducer, EventStorage eventStorage) {
+    public EventScheduler(EventProducer eventProducer,
+                          EventStorage eventStorage) {
         this.eventProducer = eventProducer;
         this.eventStorage = eventStorage;
     }

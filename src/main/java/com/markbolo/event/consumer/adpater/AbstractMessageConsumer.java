@@ -1,7 +1,7 @@
 package com.markbolo.event.consumer.adpater;
 
-import com.markbolo.event.MessageConverter;
 import com.markbolo.event.consumer.ConsumerProperty;
+import com.markbolo.event.converter.MessageConverter;
 
 /**
  * 1. 多线程consumer消费

@@ -1,9 +1,9 @@
 package com.markbolo.event.consumer.adpater.kafka;
 
-import com.markbolo.event.MessageConverter;
 import com.markbolo.event.consumer.ConsumerProperty;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
+import com.markbolo.event.converter.MessageConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;

@@ -1,12 +1,12 @@
 package com.markbolo.event.consumer.adpater.rocket;
 
 import com.aliyun.openservices.ons.api.exception.ONSClientException;
-import com.markbolo.event.MessageConverter;
 import com.markbolo.event.consumer.ConsumerProperties;
 import com.markbolo.event.consumer.ConsumerProperty;
 import com.markbolo.event.consumer.MqConsumeException;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
+import com.markbolo.event.converter.MessageConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
