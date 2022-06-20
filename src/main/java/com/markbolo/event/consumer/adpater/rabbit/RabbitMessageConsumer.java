@@ -82,10 +82,11 @@ public class RabbitMessageConsumer<T> extends AbstractMessageConsumer<T> {
     @Override
     public void subscribe() {
         // 需要处理rabbitmq connection
-        try (Connection connection = connectionFactory.newConnection()) {
+        try (Connection connection = connectionFactory.newConnection()) { // 这里connection被关闭了是否有问题
             this.channel = connection.createChannel();
             ConsumerProperties.ConsumerConfiguration configuration = consumerProperty.getConfiguration();
             boolean autoAck = false;
+            // TODO rabbitMq 多线程消费, 参考RabbitListener
             channel.basicConsume(configuration.getTopic(), autoAck, configuration.getTag(), new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
