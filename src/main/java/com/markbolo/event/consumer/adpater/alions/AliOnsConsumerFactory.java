@@ -10,12 +10,16 @@ public class AliOnsConsumerFactory implements MessageConsumerFactory {
 
     private final MessageConverter messageConverter;
 
-    public AliOnsConsumerFactory(MessageConverter messageConverter) {
+    private final AliyunOnsProperties aliyunOnsProperties;
+
+    public AliOnsConsumerFactory(MessageConverter messageConverter,
+                                 AliyunOnsProperties aliyunOnsProperties) {
         this.messageConverter = messageConverter;
+        this.aliyunOnsProperties = aliyunOnsProperties;
     }
 
     @Override
     public <T> MessageConsumer createConsumer(ConsumerProperty consumerProperty, ConsumerHandler<T> consumer) {
-        return new AliOnsMessageConsumer<>(consumerProperty, messageConverter, consumer);
+        return new AliOnsMessageConsumer<>(consumerProperty, messageConverter, consumer, aliyunOnsProperties);
     }
 }

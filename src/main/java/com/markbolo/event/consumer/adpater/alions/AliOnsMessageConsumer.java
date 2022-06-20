@@ -11,6 +11,7 @@ import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
 import com.markbolo.event.converter.MessageConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,13 +19,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 public class AliOnsMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
+    private final AliyunOnsProperties aliyunOnsProperties;
     private Consumer consumer;
     protected final AtomicBoolean started = new AtomicBoolean(false);
 
     public AliOnsMessageConsumer(ConsumerProperty consumerProperty,
                                  MessageConverter messageConverter,
-                                 ConsumerHandler<T> handler) {
+                                 ConsumerHandler<T> handler,
+                                 AliyunOnsProperties aliyunOnsProperties) {
         super(consumerProperty, messageConverter, handler);
+        this.aliyunOnsProperties = aliyunOnsProperties;
     }
 
     @Override
@@ -74,13 +78,16 @@ public class AliOnsMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
     @Override
     public void subscribe() {
-        // TODO ali ons connection在哪里处理的?? NameServer and soon
         ConsumerProperties.ConsumerConfiguration configuration = consumerProperty.getConfiguration();
         String tag = configuration.getTag();
-        Integer threadNum = configuration.getThreadNum();
         Properties properties = new Properties();
+        properties.put(PropertyKeyConst.AccessKey, aliyunOnsProperties.getAccessKey());
+        properties.put(PropertyKeyConst.SecretKey, aliyunOnsProperties.getSecretKey());
+        if (StringUtils.isNotBlank(aliyunOnsProperties.getNameServerAddress())) {
+            properties.put(PropertyKeyConst.NAMESRV_ADDR, aliyunOnsProperties.getNameServerAddress());
+        }
         properties.put(PropertyKeyConst.GROUP_ID, configuration.getConsumerGroup());
-        properties.put(PropertyKeyConst.ConsumeThreadNums, threadNum);
+        properties.put(PropertyKeyConst.ConsumeThreadNums, configuration.getThreadNum());
 
         this.consumer = ONSFactory.createConsumer(properties);
         consumer.start();

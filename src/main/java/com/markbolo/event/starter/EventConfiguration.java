@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.markbolo.event.EventPublisher;
 import com.markbolo.event.consumer.MessageConsumerFactory;
 import com.markbolo.event.consumer.adpater.alions.AliOnsConsumerFactory;
+import com.markbolo.event.consumer.adpater.alions.AliyunOnsProperties;
 import com.markbolo.event.consumer.adpater.kafka.KafkaConsumerFactory;
 import com.markbolo.event.consumer.adpater.rabbit.RabbitConsumerFactory;
 import com.markbolo.event.consumer.adpater.rocket.RocketConsumerFactory;
@@ -101,8 +102,9 @@ public class EventConfiguration {
      * TODO 如何根据情况注册consumer
      */
     @ConditionalOnClass(ONSFactory.class)
-    public MessageConsumerFactory onsConsumerFactory(MessageConverter messageConverter) {
-        return new AliOnsConsumerFactory(messageConverter);
+    public MessageConsumerFactory onsConsumerFactory(MessageConverter messageConverter,
+                                                     AliyunOnsProperties aliyunOnsProperties) {
+        return new AliOnsConsumerFactory(messageConverter, aliyunOnsProperties);
     }
 
     @Bean
