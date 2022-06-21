@@ -22,8 +22,8 @@ public class EventPublisher {
     private final EventStorage eventStorage;
     private final MessageConverter messageConverter;
 
-    public EventPublisher(EventStorage eventStorage,
-                          MessageConverter messageConverter) {
+    private EventPublisher(EventStorage eventStorage,
+                           MessageConverter messageConverter) {
         this.eventStorage = eventStorage;
         this.messageConverter = messageConverter;
     }

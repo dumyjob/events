@@ -56,10 +56,12 @@ public class EventConfiguration {
     }
 
     @Bean
-    public EventPublisher eventProducer(EventStorage eventStorage,
-                                        MessageConverter messageConverter) {
-        return new EventPublisher(eventStorage, messageConverter);
+    public EventPublisher eventPublisher(EventStorage eventStorage,
+                                         MessageConverter messageConverter) {
+        EventPublisher.createInstance(eventStorage, messageConverter);
+        return EventPublisher.instance();
     }
+
 
     @Bean
     public EventScheduler eventScheduler(EventStorage eventStorage,
@@ -77,25 +79,25 @@ public class EventConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rabbit")
-    public EventProducer rabbitEventPublisher(RabbitTemplate rabbitTemplate) {
+    public EventProducer rabbitEventProducer(RabbitTemplate rabbitTemplate) {
         return new RabbitEventProducer(rabbitTemplate);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.ons")
-    public EventProducer onsEventPublisher(Producer producer) {
+    public EventProducer onsEventProducer(Producer producer) {
         return new AliOnsEventProducer(producer);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.kafka")
-    public EventProducer kafkaEventPublisher(KafkaTemplate<String, String> kafkaTemplate) {
+    public EventProducer kafkaEventProducer(KafkaTemplate<String, String> kafkaTemplate) {
         return new KafkaEventProducer(kafkaTemplate);
     }
 
     @Bean
     @ConditionalOnProperty("spring.event.publisher.rocket")
-    public EventProducer rocketEventPublisher(DefaultMQProducer defaultMQProducer) {
+    public EventProducer rocketEventProducer(DefaultMQProducer defaultMQProducer) {
         return new RocketProducer(defaultMQProducer);
     }
 
