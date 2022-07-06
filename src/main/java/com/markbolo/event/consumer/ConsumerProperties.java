@@ -1,11 +1,10 @@
 package com.markbolo.event.consumer;
 
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * 对@StreamListener注解的Consumer进行支持
@@ -37,10 +36,6 @@ public class ConsumerProperties {
 
         private Integer triggerNotificationTimes;
 
-        // rabbitMq特异化配置
-        private String exchange;
-
-        private String routingKey;
 
         @Override
         public String toString() {

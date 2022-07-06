@@ -84,7 +84,7 @@ public class KafkaMessageConsumer<T> extends AbstractMessageConsumer<T> {
         // 自动提交offset,每1s提交一次
         props.put("auto.commit.interval.ms", "1000");
         props.put("auto.offset.reset", "earliest ");
-        props.put("client.id", "zy_client_id");
+        props.put("client.id", "zy_client_id"); // client_id和group.id的区别
         consumer = new KafkaConsumer<>(props);
         // 订阅 topic
         consumer.subscribe(Collections.singletonList(consumerProperty.getConfiguration().getTopic()));
