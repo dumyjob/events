@@ -10,18 +10,15 @@ import com.markbolo.event.consumer.ConsumerProperty;
 import com.markbolo.event.consumer.adpater.AbstractMessageConsumer;
 import com.markbolo.event.consumer.adpater.ConsumerHandler;
 import com.markbolo.event.converter.MessageConverter;
+import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 public class AliOnsMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
     private final AliyunOnsProperties aliyunOnsProperties;
     private Consumer consumer;
-    protected final AtomicBoolean started = new AtomicBoolean(false);
 
     public AliOnsMessageConsumer(ConsumerProperty consumerProperty,
                                  MessageConverter messageConverter,

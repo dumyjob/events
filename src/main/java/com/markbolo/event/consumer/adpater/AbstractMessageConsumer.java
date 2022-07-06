@@ -2,6 +2,7 @@ package com.markbolo.event.consumer.adpater;
 
 import com.markbolo.event.consumer.ConsumerProperty;
 import com.markbolo.event.converter.MessageConverter;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 1. 多线程consumer消费
@@ -17,9 +18,11 @@ public abstract class AbstractMessageConsumer<T> implements MessageConsumer, Res
 
     protected final ConsumerHandler<T> handler;
 
+    protected final AtomicBoolean started = new AtomicBoolean(false);
+
     protected AbstractMessageConsumer(ConsumerProperty consumerProperty,
-                                      MessageConverter messageConverter,
-                                      ConsumerHandler<T> handler) {
+        MessageConverter messageConverter,
+        ConsumerHandler<T> handler) {
         this.consumerProperty = consumerProperty;
         this.messageConverter = messageConverter;
         this.handler = handler;

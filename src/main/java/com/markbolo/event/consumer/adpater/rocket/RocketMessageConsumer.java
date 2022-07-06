@@ -14,12 +14,9 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 @Slf4j
 public class RocketMessageConsumer<T> extends AbstractMessageConsumer<T> {
 
-    protected final AtomicBoolean started = new AtomicBoolean(false);
     private DefaultMQPushConsumer consumer;
     private final RocketProperties rocketProperties;
 
