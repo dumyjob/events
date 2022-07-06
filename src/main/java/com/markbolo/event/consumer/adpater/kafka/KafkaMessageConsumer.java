@@ -73,7 +73,7 @@ public class KafkaMessageConsumer<T> extends AbstractMessageConsumer<T> {
     public void subscribe() {
         Properties props = new Properties();
 
-        // 必须设置的属性
+        // 必须设置的属性 应该是关于链接的属性,和RabbitConnectionFactory以及RocketProperties一样,属于基础接入配置; 和每个consumer没有关系
         props.put("bootstrap.servers", "192.168.239.131:9092");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
