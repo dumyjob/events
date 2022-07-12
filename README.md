@@ -22,12 +22,12 @@
    }
    </code>
 3. Message Consumer Properties config   
-   <code>
+   ~~~
    spring.message.consumer.#{name}.topic=order   
    spring.message.consumer.#{name}.tag=order_created   
    spring.message.consumer.#{name}.consumerGroup=consumer_id   
    spring.message.consumer.#{name}.threadNum=4   
-   </code>
+   ~~~
 
 ## messageConsumer
 
