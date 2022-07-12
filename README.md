@@ -50,11 +50,11 @@
 1. 支持consumer多线程消费
    1. Rabbit多线程消费,参考@RabbitListener
 2. consumer适配不同的broker
-3. consumer支持注解@StreamListener
+3. consumer支持注解@StreamListener ✔️
 4. 能够控制consumer是否消费: barrier.consumers=true/false barrier.consumer.${name}=true/false
 5. 支持consumer多tag消费
 6. 最好能够支持consumer能够消费多个broker的消息:broker迁移的需求
-7. @StreamListener和ConsumerProcessor两种实现consumerHandler方式,都使用spring.message.consumer配置消费
+7. @StreamListener和ConsumerProcessor两种实现consumerHandler方式,都使用spring.message.consumer配置消费 ✔️
 8. Consumer异常增强,钉钉告警或者其他方式 (能否通过无侵入的方式实现)
 9. Kafka MessageConsumer和Spring-boot协调问题,
 10. Rabbit MessageConsumer和Spring-boot协调问题, ConnectionFactory在哪里声明?
