@@ -59,6 +59,7 @@
 9. Kafka MessageConsumer和Spring-boot协调问题,
 10. Rabbit MessageConsumer和Spring-boot协调问题, ConnectionFactory在哪里声明?
 11. 消息MessageId生成
+12. 能都打开消费死信的开关
 
 ## producer
 
