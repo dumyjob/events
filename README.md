@@ -1,12 +1,16 @@
 ## How to use
 
+### Consumer
+
 1. alternative annotation: @StreamListener
+
 ~~~
    @StreamListener(name="order_created")   
    public void consume(OrderCreated message){   
-   // handle message   
+   // handle message    
    }
 ~~~
+
 2. alternative implementation Class: ConsumerProcessor
 
 ~~~
@@ -22,13 +26,23 @@
        }
    }
 ~~~
-3. Message Consumer Properties config   
+
+3. Message Consumer Properties config
 
  ~~~
    spring.message.consumer.#{name}.topic=order   
    spring.message.consumer.#{name}.tag=order_created   
    spring.message.consumer.#{name}.consumerGroup=consumer_id   
    spring.message.consumer.#{name}.threadNum=4   
+~~~
+
+### Producer
+
+~~~
+  EventPublisher.instance()
+                .publish(topic,tag,message);
+  EventPublisher.instance()
+                .publish(topic,tag,message,delay);
 ~~~
 
 ## messageConsumer
