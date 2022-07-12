@@ -7,8 +7,6 @@ import org.springframework.core.ResolvableType;
  */
 public abstract class ConsumerProcessorAdapter<T> implements ConsumerProcessor<T> {
 
-    private String name;
-
     private final Class<?> genericType;
 
     protected ConsumerProcessorAdapter(){
@@ -16,15 +14,6 @@ public abstract class ConsumerProcessorAdapter<T> implements ConsumerProcessor<T
         genericType = resolvableType.getSuperType().getGeneric(0).resolve();
     }
 
-    public ConsumerProcessorAdapter(String name) {
-        this();
-        this.name = name;
-    }
-
-    @Override
-    public String name() {
-        return name;
-    }
 
     @Override
     public Class<?> getGenericType() {
