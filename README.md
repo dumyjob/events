@@ -1,14 +1,15 @@
 ## How to use
 
 1. alternative annotation: @StreamListener
-   <code>   
+~~~
    @StreamListener(name="order_created")   
    public void consume(OrderCreated message){   
    // handle message   
    }
-   </code>
+~~~
 2. alternative implementation Class: ConsumerProcessor
-   <code>  
+
+~~~
    public class OrderCreatedProcessor extends ConsumerProcessorAdapter<`OrderCreated`> {
 
        @Override
@@ -20,14 +21,15 @@
           return "order_created"
        }
    }
-   </code>
+~~~
 3. Message Consumer Properties config   
-   ~~~
+
+ ~~~
    spring.message.consumer.#{name}.topic=order   
    spring.message.consumer.#{name}.tag=order_created   
    spring.message.consumer.#{name}.consumerGroup=consumer_id   
    spring.message.consumer.#{name}.threadNum=4   
-   ~~~
+~~~
 
 ## messageConsumer
 
