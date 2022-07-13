@@ -14,7 +14,7 @@
 2. alternative implementation Class: ConsumerProcessor
 
 ~~~
-   public class OrderCreatedProcessor extends ConsumerProcessorAdapter<`OrderCreated`> {
+   public class OrderCreatedProcessor extends ConsumerProcessorAdapter<OrderCreated> {
 
        @Override
        void handle(OrderCreated message){
