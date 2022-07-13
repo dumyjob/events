@@ -49,7 +49,7 @@
 
 1. 支持consumer多线程消费
    1. Rabbit多线程消费,参考@RabbitListener
-2. consumer适配不同的broker
+2. consumer适配不同的broker, 能够支持同时消费不同类型的broker(kafka/rabbit/rocket/ali-ons) ✔️
 3. consumer支持注解@StreamListener ✔️
 4. 能够控制consumer是否消费: barrier.consumers=true/false barrier.consumer.${name}=true/false
 5. 支持consumer多tag消费
