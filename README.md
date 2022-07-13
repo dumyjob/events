@@ -60,6 +60,7 @@
 10. Rabbit MessageConsumer和Spring-boot协调问题, ConnectionFactory在哪里声明?
 11. 消息MessageId生成
 12. 能都打开消费死信的开关
+13. spring-boot-starter开发
 
 ## producer
 
